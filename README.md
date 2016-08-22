@@ -1,0 +1,1 @@
+Redis同步工具,基于Redis的Replication机制,,通过SYNC和PSYNC模仿Slave实现数据同步

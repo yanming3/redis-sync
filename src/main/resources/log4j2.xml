@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status=debug 可以查看log4j的装配过程 -->
+<Configuration status="off" monitorInterval="1800">
+    <Properties>
+        <!-- 日志备份目录 -->
+        <Property name="LOG_HOME">logs</Property>
+    </Properties>
+    <Appenders>
+        <!-- 定义控制台输出 -->
+        <Console name="console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout
+                    pattern="%date{yyyy-MM-dd HH:mm:ss} %level [%C:%line] - %msg%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <AsyncLogger name="com.yanming" level="debug"
+                     includeLocation="true" additivity="false">
+            <AppenderRef ref="console" />
+        </AsyncLogger>
+        <AsyncLogger name="io.netty" level="debug"
+                     includeLocation="true" additivity="false">
+            <AppenderRef ref="console" />
+        </AsyncLogger>
+        <!-- Root Logger -->
+        <Root level="debug" additivity="false">
+            <AppenderRef ref="console" />
+        </Root>
+    </Loggers>
+</Configuration>
