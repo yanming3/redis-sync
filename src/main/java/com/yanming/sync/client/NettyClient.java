@@ -38,13 +38,11 @@ public class NettyClient {
     public NettyClient(String host, int port, ReplicateListener replicateListener) {
         this.host = host;
         this.port = port;
-        this.replicateListener = replicateListener;
         if (replicateListener == null) {
-            if (replicateListener == null) {
-                logger.warn("未注册同步Listener,默认使用Echo!");
-                return;
-            }
-            replicateListener = ReplicateListener.DEFAULT;
+            logger.warn("未注册同步Listener,默认使用Echo!");
+            this.replicateListener = ReplicateListener.DEFAULT;
+        } else {
+            this.replicateListener = replicateListener;
         }
     }
 
@@ -98,6 +96,15 @@ public class NettyClient {
      */
     public void sync() {
         channel.writeAndFlush(RedisRequestEncoder.encode(channel.alloc(), Commands.SYNC.raw));
+    }
+
+    /**
+     * 增量同步,命令格式为:PSYNC runid offset
+     * @param runId 如果为?,表示不限定master
+     * @param offset -1表示全量复制
+     */
+    public void psync(String runId,int offset) {
+        channel.writeAndFlush(RedisRequestEncoder.encode(channel.alloc(), Commands.PSYNC.raw, ByteUtils.toBytes(runId), ByteUtils.toBytes(offset)));
     }
 
     /**
